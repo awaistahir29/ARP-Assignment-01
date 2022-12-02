@@ -13,35 +13,51 @@ int main(int argc, char const *argv[])
 
     // Path to the named pipe
     char *motorX_fifo = "/tmp/motorX_fifo";
-
-    // Making Named Pipes for Communication
-    char *inspection_fifo_X = "/tmp/inspection_fifo_X";
+    char *motorZ_fifo = "/tmp/motorZ_fifo";
     
-    mkfifo(inspection_fifo_X, 0777);
-    
-
+    printf("Opening\n");
     int fd_X = open(motorX_fifo, O_RDONLY);
     if (fd_X == -1){
+        printf("Error in Opening\n");
         return 1;
     }
-    int fd_IN = open(inspection_fifo_X, O_WRONLY);
 
+    printf("Opening\n");
+    int fd_z = open(motorZ_fifo, O_RDONLY);
+    if (fd_z == -1){
+        printf("Error in Opening\n");
+        return 1;
+    }
+
+    printf("Opened\n");
     
-    int x;
-    while(TRUE){
-    int d = read(fd_X, &x, sizeof(int));
+    while(TRUE) {
+        int x;
+        int d = read(fd_X, &x, sizeof(x));
         if (d == -1){
             printf("Error in reading from pipe\n");
             return 2;
         }
-        printf("Read from %d\n", x);
-    }
-    // Closing all opened file descripters and unlinking the fifo files
-    close(fd_IN);
-    unlink(inspection_fifo_X);
 
+        switch(x){
+            case 0:
+                printf("Stopping the MotorX\n");
+                break;
+            case -1:
+                printf("Decreasing the speed of MotorX\n");
+                break;
+            case 1:
+                printf("Increasing the speed of MotorX\n");
+                break;
+        }
+}
+    
+    // Closing all opened file descripters and unlinking the fifo files
     close(fd_X);
     unlink(motorX_fifo);
+
+    close(fd_z);
+    unlink(motorZ_fifo);
 
     return 0;
 }

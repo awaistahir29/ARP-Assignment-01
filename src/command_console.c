@@ -81,9 +81,9 @@ int main(int argc, char const *argv[])
                     for(int j = 0; j < COLS; j++) {
                         mvaddch(LINES - 1, j, ' ');
                         }
-                    int x = 1;
+                    int d = -1;
                     //char buf[80];
-                    int a = write(fd_X, &x, sizeof(x));
+                    int a = write(fd_X, &d, sizeof(d));
                     if (a == -1) {
                         printf("Writing Error \n");
                         return 3;
@@ -98,6 +98,13 @@ int main(int argc, char const *argv[])
                     for(int j = 0; j < COLS; j++) {
                         mvaddch(LINES - 1, j, ' ');
                     }
+                    int i = +1;
+                    //char buf[80];
+                    int a = write(fd_X, &i, sizeof(i));
+                    if (a == -1) {
+                        printf("Writing Error \n");
+                        return 3;
+                        }
                 }
 
                 // Vx stop button pressed
@@ -108,9 +115,16 @@ int main(int argc, char const *argv[])
                     for(int j = 0; j < COLS; j++) {
                         mvaddch(LINES - 1, j, ' ');
                     }
+                    int s = 0;
+                    //char buf[80];
+                    int a = write(fd_X, &s, sizeof(s));
+                    if (a == -1) {
+                        printf("Writing Error \n");
+                        return 3;
+                    }
                 }
 
-                // Vz++ button pressed
+                // Vz-- button pressed
                 else if(check_button_pressed(vz_decr_btn, &event)) {
                     mvprintw(LINES - 1, 1, "Vertical Speed Decreased");
                     refresh();
@@ -118,9 +132,16 @@ int main(int argc, char const *argv[])
                     for(int j = 0; j < COLS; j++) {
                         mvaddch(LINES - 1, j, ' ');
                     }
+                    int dz = -1;
+                    //char buf[80];
+                    int a = write(fd_z, &dz, sizeof(dz));
+                    if (a == -1) {
+                        printf("Writing Error \n");
+                        return 3;
+                    }
                 }
 
-                // Vz-- button pressed
+                // Vz++ button pressed
                 else if(check_button_pressed(vz_incr_btn, &event)) {
                     mvprintw(LINES - 1, 1, "Vertical Speed Increased");
                     refresh();
@@ -128,6 +149,13 @@ int main(int argc, char const *argv[])
                     for(int j = 0; j < COLS; j++) {
                         mvaddch(LINES - 1, j, ' ');
                     }
+                    int iz = +1;
+                    //char buf[80];
+                    int a = write(fd_z, &iz, sizeof(iz));
+                    if (a == -1) {
+                        printf("Writing Error \n");
+                        return 3;
+                        }
                 }
 
                 // Vz stop button pressed
@@ -137,6 +165,13 @@ int main(int argc, char const *argv[])
                     sleep(1);
                     for(int j = 0; j < COLS; j++) {
                         mvaddch(LINES - 1, j, ' ');
+                    }
+                    int sz = 0;
+                    //char buf[80];
+                    int a = write(fd_z, &sz, sizeof(sz));
+                    if (a == -1) {
+                        printf("Writing Error \n");
+                        return 3;
                     }
                 }
             }

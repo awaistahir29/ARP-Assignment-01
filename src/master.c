@@ -33,9 +33,10 @@ int main() {
   char * arg_list_motorZ[] = {"./bin/motorZ", "", NULL};
   char * arg_list_watchdog[] = {"./bin/watchdog", "", NULL};
 
+  pid_t motor_x = spawn("/usr/bin/konsole", arg_list_motorX);
   pid_t pid_cmd = spawn("/usr/bin/konsole", arg_list_command);
   pid_t pid_insp = spawn("/usr/bin/konsole", arg_list_inspection);
-  pid_t motor_x = spawn("/usr/bin/konsole", arg_list_motorX);
+  
   pid_t motor_z = spawn("./bin/motorZ", arg_list_motorZ);
   pid_t watchdog = spawn("./bin/watchdog", arg_list_watchdog);
 
