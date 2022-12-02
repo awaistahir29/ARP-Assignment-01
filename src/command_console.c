@@ -1,5 +1,18 @@
 #include "./../include/command_utilities.h"
 
+#include <asm-generic/errno-base.h>
+#include <stdio.h>
+#include <string.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <errno.h>
+#include <sys/resource.h>
+
+
 int main(int argc, char const *argv[])
 {
     // Utility variable to avoid trigger resize event on launch
@@ -7,7 +20,38 @@ int main(int argc, char const *argv[])
 
     // Initialize User Interface 
     init_console_ui();
+
+    // Making Named Pipes for Communication
+    char *motorX_fifo = "/tmp/motorX_fifo";
+    char *motorZ_fifo = "/tmp/motorZ_fifo";
+    char *inspection_fifo = "/tmp/inspection_fifo";
+    char *watchdog_fifo = "/tmp/watchdog_fifo";
+
+    int r = mkfifo(motorX_fifo, 0666); 
+    if (r == -1){
+        if (errno != EEXIST){
+            return 1;
+        }
+        
+    }
+
+    mkfifo(motorZ_fifo, 0777);
+    mkfifo(inspection_fifo, 0777);
+    mkfifo(watchdog_fifo, 0777);
+
+
+    int fd_X = open(motorX_fifo, O_WRONLY);
+    if (fd_X == -1){
+        return 2;
+    }
+
+    int fd_z = open(motorZ_fifo, O_RDWR);
+    int fd_IN = open(inspection_fifo, O_RDWR);
+    int fd_WD = open(watchdog_fifo, O_RDWR);
+
     
+
+
     // Infinite loop
     while(TRUE)
 	{	
@@ -36,7 +80,14 @@ int main(int argc, char const *argv[])
                     sleep(1);
                     for(int j = 0; j < COLS; j++) {
                         mvaddch(LINES - 1, j, ' ');
-                    }
+                        }
+                    int x = '1';
+                    //char buf[80];
+                    int a = write(fd_X, &x, sizeof(x));
+                    if (a == -1) {
+                        printf("Writing Error \n");
+                        return 3;
+                        }
                 }
 
                 // Vx++ button pressed
@@ -96,5 +147,19 @@ int main(int argc, char const *argv[])
 
     // Terminate
     endwin();
+
+    // Closing all opened file descripters and unlinking the fifo files
+    close(fd_IN);
+    unlink(inspection_fifo);
+
+    close(fd_WD);
+    unlink(watchdog_fifo);
+
+    close(fd_X);
+    unlink(motorX_fifo);
+
+    close(fd_z);
+    unlink(motorZ_fifo);
+
     return 0;
 }
