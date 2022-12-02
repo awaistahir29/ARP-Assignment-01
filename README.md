@@ -1,15 +1,25 @@
 # ARP-Hoist-Control
 Base project structure for the first *Advanced and Robot Programming* (ARP) assignment.
 The project provides the basic functionalities for the **Command** and **Inspection processes**, both of which are implemented through the *ncurses library* as simple GUIs. In particular, the repository is organized as follows:
-- The `src` folder contains the source code for the Command, Inspection and Master processes.
+- The `src` folder contains the source code for the Command, Inspection, MotorX, MotorZ and Master processes.
 - The `include` folder contains all the data structures and methods used within the ncurses framework to build the two GUIs. Unless you want to expand the graphical capabilities of the UIs (which requires understanding how ncurses works), you can ignore the content of this folder, as it already provides you with all the necessary functionalities.
 - The `bin` folder is where the executable files are expected to be after compilation
+- The `run.sh` is a shell script which complie all of the processes and execute the master and the master process is a parent process, responsible for executing all child processes.
 
 ## ncurses installation
 To install the ncurses library, simply open a terminal and type the following command:
 ```console
 sudo apt-get install libncurses-dev
 ```
+
+## Quick Start
+The shell script is compiling all procsses and launching the master process. 
+1. Simply clone this repository in your workspace
+2. Enter in the project folder and Open the terminal.
+3. Run the shell script `run.sh`:
+	```console
+	./run.sh
+	```
 
 ## Compiling and running the code
 The Command and Inspection processes depend on the ncurses library, which needs to be linked during the compilation step. Furthermore, the Inspection process also uses the mathematical library for some additional computation. Therefore the steps to compile are the following:
