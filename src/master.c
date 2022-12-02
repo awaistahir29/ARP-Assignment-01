@@ -29,13 +29,22 @@ int main() {
 
   char * arg_list_command[] = { "/usr/bin/konsole", "-e", "./bin/command", NULL };
   char * arg_list_inspection[] = { "/usr/bin/konsole", "-e", "./bin/inspection", NULL };
+  char * arg_list_motorX[] = {"./bin/motorX", "", NULL};
+  char * arg_list_motorZ[] = {"./bin/motorZ", "", NULL};
+  char * arg_list_watchdog[] = {"./bin/watchdog", "", NULL};
 
   pid_t pid_cmd = spawn("/usr/bin/konsole", arg_list_command);
   pid_t pid_insp = spawn("/usr/bin/konsole", arg_list_inspection);
+  pid_t motor_x = spawn("./bin/motorX", arg_list_motorX);
+  pid_t motor_z = spawn("./bin/motorZ", arg_list_motorZ);
+  pid_t watchdog = spawn("./bin/watchdog", arg_list_watchdog);
 
   int status;
   waitpid(pid_cmd, &status, 0);
   waitpid(pid_insp, &status, 0);
+  waitpid(motor_x, &status, 0);
+  waitpid(motor_z, &status, 0);
+  waitpid(watchdog, &status, 0);
   
   printf ("Main program exiting with status %d\n", status);
   return 0;

@@ -29,7 +29,7 @@ int main(int argc, char const *argv[])
             // Check which button has been pressed...
             if(getmouse(&event) == OK) {
 
-                // Vx++ button pressed
+                // Vx-- button pressed
                 if(check_button_pressed(vx_decr_btn, &event)) {
                     mvprintw(LINES - 1, 1, "Horizontal Speed Decreased");
                     refresh();
@@ -39,7 +39,7 @@ int main(int argc, char const *argv[])
                     }
                 }
 
-                // Vx-- button pressed
+                // Vx++ button pressed
                 else if(check_button_pressed(vx_incr_btn, &event)) {
                     mvprintw(LINES - 1, 1, "Horizontal Speed Increased");
                     refresh();
