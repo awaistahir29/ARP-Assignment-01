@@ -22,19 +22,20 @@ int main(int argc, char const *argv[])
 
     int fd_X = open(motorX_fifo, O_RDONLY);
     if (fd_X == -1){
-        return 2;
+        return 1;
     }
     int fd_IN = open(inspection_fifo_X, O_WRONLY);
 
     
-    char count[80];
-    int d = read(fd_X, count, sizeof(count));
+    int x;
+    while(TRUE){
+    int d = read(fd_X, &x, sizeof(int));
         if (d == -1){
             printf("Error in reading from pipe\n");
-            return 1;
+            return 2;
         }
-        printf("Read from Command Console");
-
+        printf("Read from %d\n", x);
+    }
     // Closing all opened file descripters and unlinking the fifo files
     close(fd_IN);
     unlink(inspection_fifo_X);

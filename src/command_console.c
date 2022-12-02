@@ -81,7 +81,7 @@ int main(int argc, char const *argv[])
                     for(int j = 0; j < COLS; j++) {
                         mvaddch(LINES - 1, j, ' ');
                         }
-                    int x = '1';
+                    int x = 1;
                     //char buf[80];
                     int a = write(fd_X, &x, sizeof(x));
                     if (a == -1) {
