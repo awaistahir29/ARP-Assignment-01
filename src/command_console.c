@@ -24,7 +24,7 @@ int main(int argc, char const *argv[])
     // Making Named Pipes for Communication
     char *motorX_fifo = "/tmp/motorX_fifo";
     char *motorZ_fifo = "/tmp/motorZ_fifo";
-    char *inspection_fifo = "/tmp/inspection_fifo";
+    //char *inspection_fifo = "/tmp/inspection_fifo";
     char *watchdog_fifo = "/tmp/watchdog_fifo";
 
     int r = mkfifo(motorX_fifo, 0666); 
@@ -36,7 +36,7 @@ int main(int argc, char const *argv[])
     }
 
     mkfifo(motorZ_fifo, 0777);
-    mkfifo(inspection_fifo, 0777);
+    //mkfifo(inspection_fifo, 0777);
     mkfifo(watchdog_fifo, 0777);
 
 
@@ -46,7 +46,7 @@ int main(int argc, char const *argv[])
     }
 
     int fd_z = open(motorZ_fifo, O_RDWR);
-    int fd_IN = open(inspection_fifo, O_RDWR);
+    //int fd_IN = open(inspection_fifo, O_RDWR);
     int fd_WD = open(watchdog_fifo, O_RDWR);
 
     
@@ -184,8 +184,8 @@ int main(int argc, char const *argv[])
     endwin();
 
     // Closing all opened file descripters and unlinking the fifo files
-    close(fd_IN);
-    unlink(inspection_fifo);
+    //close(fd_IN);
+    //unlink(inspection_fifo);
 
     close(fd_WD);
     unlink(watchdog_fifo);
