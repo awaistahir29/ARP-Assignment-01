@@ -40,7 +40,7 @@ int main(int argc, char const *argv[])
     mkfifo(watchdog_fifo, 0777);
 
 
-    int fd_X = open(motorX_fifo, O_WRONLY);
+    int fd_X = open(motorX_fifo, O_RDWR);
     if (fd_X == -1){
         return 2;
     }

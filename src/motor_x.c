@@ -82,7 +82,7 @@ int main(int argc, char const *argv[])
             case 0:
                 switch(x){
                     case 0:
-                        printf("Stopped MotorX\n");
+                        printf("StoppedMotorX\n");
                         int a = write(fd_insp, &position, sizeof(float));
                         if (a == -1){
                             printf("Error Occured writing on insp");

@@ -14,11 +14,21 @@ int main(int argc, char const *argv[])
 {
     char *inspection_fifo = "/tmp/insp_fifo";
 
+    char *inspection_fifoZ = "/tmp/insp_fifoZ";
+    
+
     int fd_insp = open(inspection_fifo, O_RDONLY);
     if(fd_insp == -1){
         printf("Error Opening inspection fifo\n");
         return 6;
     }
+
+    int fd_insp_z = open(inspection_fifoZ, O_RDONLY);
+    if(fd_insp_z == -1){
+        printf("Error Opening inspection fifo\n");
+        return 7;
+    }
+    printf("Opened FIle Z\n");
 
     // Utility variable to avoid trigger resize event on launch
     int first_resize = TRUE;
@@ -78,7 +88,13 @@ int main(int argc, char const *argv[])
             printf("Error in reading from pipe\n");
             return 2;
         }
-        
+
+        int e = read(fd_insp_z, &ee_y, sizeof(float));
+        if (e == -1){
+            printf("Error in reading from pipe\n");
+            return 3;
+        }
+        /*
         
         // To be commented in final version...
         switch (cmd)
@@ -90,7 +106,7 @@ int main(int argc, char const *argv[])
             case KEY_RIGHT:
                 //ee_x++;
                 break;
-                */
+                
             case KEY_UP:
                 ee_y--;
                 break;
@@ -100,7 +116,7 @@ int main(int argc, char const *argv[])
             default:
                 break;
         }
-        
+        */
         
         // Update UI
         update_console_ui(&ee_x, &ee_y);
@@ -111,6 +127,9 @@ int main(int argc, char const *argv[])
 
     close(fd_insp);
     unlink(inspection_fifo);
+
+     close(fd_insp_z);
+    unlink(inspection_fifoZ);
 
     return 0;
 }
