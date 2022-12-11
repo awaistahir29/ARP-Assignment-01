@@ -9,13 +9,37 @@
 #include <sys/stat.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <signal.h>
+#include <errno.h>
+
+//pointer to log file
+FILE *logfile;
+
+
+
+int check(int retval)
+{
+    if (retval == -1)
+    {
+        fprintf(logfile, "\nERROR (" __FILE__ ":%d) -- %s\n", __LINE__, strerror(errno));
+        fflush(logfile);
+        fclose(logfile);
+        printf("\tAn error has been reported on log file.\n");
+        fflush(stdout);
+        exit(-1);
+    }
+    return retval;
+}
 
 int main(int argc, char const *argv[])
 {
     char *inspection_fifo = "/tmp/insp_fifo";
 
     char *inspection_fifoZ = "/tmp/insp_fifoZ";
+
+    char *motorX_fifo = "/tmp/motorX_fifo";
     
+    int fd_motor_X = check(open(motorX_fifo, O_WRONLY));
 
     int fd_insp = open(inspection_fifo, O_RDONLY);
     if(fd_insp == -1){
@@ -63,6 +87,8 @@ int main(int argc, char const *argv[])
                 // STOP button pressed
                 if(check_button_pressed(stp_button, &event)) {
                     mvprintw(LINES - 1, 1, "STP button pressed");
+                    int sp = 2;
+                    check(write(fd_motor_X, &sp, sizeof(int)));
                     refresh();
                     sleep(1);
                     for(int j = 0; j < COLS; j++) {
@@ -73,11 +99,14 @@ int main(int argc, char const *argv[])
                 // RESET button pressed
                 else if(check_button_pressed(rst_button, &event)) {
                     mvprintw(LINES - 1, 1, "RST button pressed");
+                    int sp = 3;
+                    check(write(fd_motor_X, &sp, sizeof(int)));
                     refresh();
                     sleep(1);
                     for(int j = 0; j < COLS; j++) {
                         mvaddch(LINES - 1, j, ' ');
                     }
+                    mvprintw(LINES - 1, 1, "RST button pressed");
                 }
             }
         }
@@ -99,7 +128,6 @@ int main(int argc, char const *argv[])
         // To be commented in final version...
         switch (cmd)
         {
-            /*
             case KEY_LEFT:
                 //ee_x--;
                 break;
@@ -130,6 +158,9 @@ int main(int argc, char const *argv[])
 
      close(fd_insp_z);
     unlink(inspection_fifoZ);
+
+    close(fd_motor_X);
+    unlink(motorX_fifo);
 
     return 0;
 }

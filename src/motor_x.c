@@ -122,8 +122,26 @@ int main(int argc, char const *argv[])
                         }
                         sleep(movement_time);
                         break;
-                    }
-                    break;
+                    case 2:
+                        printf("Stopped From Inspection Occured\n");
+                        int aaa = write(fd_insp, &position, sizeof(float));
+                        if (aaa == -1){
+                            printf("Error Occured writing on insp");
+                            return 5;
+                            }
+                        }
+                        sleep(movement_time);
+                        break;
+                    case 3:
+                        printf("Reset Command Occured\n");
+                        position = 0;
+                        int rs = write(fd_insp, &position, sizeof(float));
+                        if (rs == -1){
+                            printf("Error Occured writing on insp");
+                            return 6;
+                            }
+                        sleep(movement_time);
+                        break;    
             case -1:
                 printf("Error Occured");
                 break;

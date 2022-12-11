@@ -1,0 +1,8 @@
+******log file created******
+p - FIFO files connection have been estabished
+******log file created******
+p - FIFO files connection have been estabished
+******log file created******
+p - FIFO files connection have been estabished
+******log file created******
+p - FIFO files connection have been estabished

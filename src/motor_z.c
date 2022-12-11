@@ -24,7 +24,6 @@ int main(int argc, char const *argv[])
     // Path to the named pipe
     char *motorX_fifo = "/tmp/motorX_fifo";
     char *motorZ_fifo = "/tmp/motorZ_fifo";
-
     char *inspection_fifoZ = "/tmp/insp_fifoZ";
     
     int r = mkfifo(inspection_fifoZ, 0666);
