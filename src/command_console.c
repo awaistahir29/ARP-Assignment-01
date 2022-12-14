@@ -12,6 +12,24 @@
 #include <errno.h>
 #include <sys/resource.h>
 
+//pointer to log file
+FILE *logfile;
+
+int x;
+
+int check(int retval)
+{
+    if (retval == -1)
+    {
+        fprintf(logfile, "\nERROR (" __FILE__ ":%d) -- %s\n", __LINE__, strerror(errno));
+        fflush(logfile);
+        fclose(logfile);
+        printf("\tAn error has been reported on log file.\n");
+        fflush(stdout);
+        exit(-1);
+    }
+    return retval;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -24,7 +42,6 @@ int main(int argc, char const *argv[])
     // Making Named Pipes for Communication
     char *motorX_fifo = "/tmp/motorX_fifo";
     char *motorZ_fifo = "/tmp/motorZ_fifo";
-    //char *inspection_fifo = "/tmp/inspection_fifo";
     char *watchdog_fifo = "/tmp/watchdog_fifo";
 
     int r = mkfifo(motorX_fifo, 0666); 
@@ -36,21 +53,12 @@ int main(int argc, char const *argv[])
     }
 
     mkfifo(motorZ_fifo, 0777);
-    //mkfifo(inspection_fifo, 0777);
     mkfifo(watchdog_fifo, 0777);
 
 
-    int fd_X = open(motorX_fifo, O_RDWR);
-    if (fd_X == -1){
-        return 2;
-    }
-
-    int fd_z = open(motorZ_fifo, O_RDWR);
-    //int fd_IN = open(inspection_fifo, O_RDWR);
-    int fd_WD = open(watchdog_fifo, O_RDWR);
-
-    
-
+    int fd_X = check(open(motorX_fifo, O_RDWR));
+    int fd_z = check(open(motorZ_fifo, O_RDWR));
+    int fd_WD = check(open(watchdog_fifo, O_RDWR));
 
     // Infinite loop
     while(TRUE)
@@ -83,11 +91,7 @@ int main(int argc, char const *argv[])
                         }
                     int d = -1;
                     //char buf[80];
-                    int a = write(fd_X, &d, sizeof(d));
-                    if (a == -1) {
-                        printf("Writing Error \n");
-                        return 3;
-                        }
+                    check(write(fd_X, &d, sizeof(int)));
                 }
 
                 // Vx++ button pressed
@@ -100,11 +104,7 @@ int main(int argc, char const *argv[])
                     }
                     int i = +1;
                     //char buf[80];
-                    int a = write(fd_X, &i, sizeof(i));
-                    if (a == -1) {
-                        printf("Writing Error \n");
-                        return 3;
-                        }
+                    check(write(fd_X, &i, sizeof(int)));
                 }
 
                 // Vx stop button pressed
@@ -117,11 +117,7 @@ int main(int argc, char const *argv[])
                     }
                     int s = 0;
                     //char buf[80];
-                    int a = write(fd_X, &s, sizeof(s));
-                    if (a == -1) {
-                        printf("Writing Error \n");
-                        return 3;
-                    }
+                    check(write(fd_X, &s, sizeof(int)));
                 }
 
                 // Vz-- button pressed
@@ -134,11 +130,7 @@ int main(int argc, char const *argv[])
                     }
                     int dz = -1;
                     //char buf[80];
-                    int a = write(fd_z, &dz, sizeof(dz));
-                    if (a == -1) {
-                        printf("Writing Error \n");
-                        return 3;
-                    }
+                    check(write(fd_z, &dz, sizeof(dz)));
                 }
 
                 // Vz++ button pressed
@@ -151,11 +143,7 @@ int main(int argc, char const *argv[])
                     }
                     int iz = +1;
                     //char buf[80];
-                    int a = write(fd_z, &iz, sizeof(iz));
-                    if (a == -1) {
-                        printf("Writing Error \n");
-                        return 3;
-                        }
+                    check(write(fd_z, &iz, sizeof(iz)));
                 }
 
                 // Vz stop button pressed
@@ -168,11 +156,7 @@ int main(int argc, char const *argv[])
                     }
                     int sz = 0;
                     //char buf[80];
-                    int a = write(fd_z, &sz, sizeof(sz));
-                    if (a == -1) {
-                        printf("Writing Error \n");
-                        return 3;
-                    }
+                    check(write(fd_z, &sz, sizeof(sz)));
                 }
             }
         }
@@ -187,13 +171,13 @@ int main(int argc, char const *argv[])
     //close(fd_IN);
     //unlink(inspection_fifo);
 
-    close(fd_WD);
+    check(close(fd_WD));
     unlink(watchdog_fifo);
 
-    close(fd_X);
+    check(close(fd_X));
     unlink(motorX_fifo);
 
-    close(fd_z);
+    check(close(fd_z));
     unlink(motorZ_fifo);
 
     return 0;
