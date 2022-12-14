@@ -135,11 +135,11 @@ int main(int argc, char const *argv[])
     }
     
     // Closing all opened file descripters and unlinking the fifo files
-    close(fd_X);
+    check(close(fd_X));
     unlink(motorX_fifo);
 
 
-    close(fd_insp);
+    check(close(fd_insp));
     unlink(inspection_fifo);
 
     return 0;

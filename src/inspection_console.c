@@ -15,8 +15,6 @@
 //pointer to log file
 FILE *logfile;
 
-
-
 int check(int retval)
 {
     if (retval == -1)
@@ -137,16 +135,16 @@ int main(int argc, char const *argv[])
     // Terminate
     endwin();
 
-    close(fd_insp);
+    check(close(fd_insp));
     unlink(inspection_fifo);
 
-    close(fd_insp_z);
+    check(close(fd_insp_z));
     unlink(inspection_fifoZ);
 
-    close(fd_motor_X);
+    check(close(fd_motor_X));
     unlink(motorX_fifo);
 
-    close(fd_z);
+    check(close(fd_z));
     unlink(motorZ_fifo);
 
     return 0;
