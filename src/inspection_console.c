@@ -34,24 +34,15 @@ int check(int retval)
 int main(int argc, char const *argv[])
 {
     char *inspection_fifo = "/tmp/insp_fifo";
-
     char *inspection_fifoZ = "/tmp/insp_fifoZ";
-
     char *motorX_fifo = "/tmp/motorX_fifo";
+    char *motorZ_fifo = "/tmp/motorZ_fifo";
+
+    int fd_z = check(open(motorZ_fifo, O_RDWR));
+    int fd_motor_X = check(open(motorX_fifo, O_RDWR));
+    int fd_insp = check(open(inspection_fifo, O_RDWR));
+    int fd_insp_z = check(open(inspection_fifoZ, O_RDWR));
     
-    int fd_motor_X = check(open(motorX_fifo, O_WRONLY));
-
-    int fd_insp = open(inspection_fifo, O_RDONLY);
-    if(fd_insp == -1){
-        printf("Error Opening inspection fifo\n");
-        return 6;
-    }
-
-    int fd_insp_z = open(inspection_fifoZ, O_RDONLY);
-    if(fd_insp_z == -1){
-        printf("Error Opening inspection fifo\n");
-        return 7;
-    }
     printf("Opened FIle Z\n");
 
     // Utility variable to avoid trigger resize event on launch
@@ -89,6 +80,7 @@ int main(int argc, char const *argv[])
                     mvprintw(LINES - 1, 1, "STP button pressed");
                     int sp = 2;
                     check(write(fd_motor_X, &sp, sizeof(int)));
+                    check(write(fd_z, &sp, sizeof(int)));
                     refresh();
                     sleep(1);
                     for(int j = 0; j < COLS; j++) {
@@ -101,6 +93,7 @@ int main(int argc, char const *argv[])
                     mvprintw(LINES - 1, 1, "RST button pressed");
                     int sp = 3;
                     check(write(fd_motor_X, &sp, sizeof(int)));
+                    check(write(fd_z, &sp, sizeof(int)));
                     refresh();
                     sleep(1);
                     for(int j = 0; j < COLS; j++) {
@@ -112,17 +105,8 @@ int main(int argc, char const *argv[])
         }
         
         //float x;
-        int d = read(fd_insp, &ee_x, sizeof(float));
-        if (d == -1){
-            printf("Error in reading from pipe\n");
-            return 2;
-        }
-
-        int e = read(fd_insp_z, &ee_y, sizeof(float));
-        if (e == -1){
-            printf("Error in reading from pipe\n");
-            return 3;
-        }
+        int d = check(read(fd_insp, &ee_x, sizeof(float)));
+        int e = check(read(fd_insp_z, &ee_y, sizeof(float)));
         /*
         
         // To be commented in final version...
@@ -156,11 +140,14 @@ int main(int argc, char const *argv[])
     close(fd_insp);
     unlink(inspection_fifo);
 
-     close(fd_insp_z);
+    close(fd_insp_z);
     unlink(inspection_fifoZ);
 
     close(fd_motor_X);
     unlink(motorX_fifo);
+
+    close(fd_z);
+    unlink(motorZ_fifo);
 
     return 0;
 }

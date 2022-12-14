@@ -2,6 +2,7 @@
 #include <curses.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/select.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -11,7 +12,25 @@
 #include <fcntl.h>
 #include <errno.h>
 
+
+//pointer to log file
+FILE *logfile;
+
 int x;
+
+int check(int retval)
+{
+    if (retval == -1)
+    {
+        fprintf(logfile, "\nERROR (" __FILE__ ":%d) -- %s\n", __LINE__, strerror(errno));
+        fflush(logfile);
+        fclose(logfile);
+        printf("\tAn error has been reported on log file.\n");
+        fflush(stdout);
+        exit(-1);
+    }
+    return retval;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -36,7 +55,6 @@ int main(int argc, char const *argv[])
     char *motorX_fifo = "/tmp/motorX_fifo";
     char *inspection_fifo = "/tmp/insp_fifo";
 
-
     int r = mkfifo(inspection_fifo, 0666);
     if (r == -1){
         if (errno != EEXIST){
@@ -44,23 +62,9 @@ int main(int argc, char const *argv[])
         }
         
     }
-    
-    printf("Opening\n");
-    int fd_X = open(motorX_fifo, O_RDONLY);
-    if (fd_X == -1){
-        printf("Error in Opening\n");
-        return 1;
-    }
 
-    int fd_insp = open(inspection_fifo, O_RDWR);
-    if(fd_insp == -1){
-        printf("Error Opening inspection fifo\n");
-        return 6;
-    }
-
-    
-
-    printf("Opened\n");
+    int fd_X = check(open(motorX_fifo, O_RDWR));
+    int fd_insp = check(open(inspection_fifo, O_RDWR));
     
     while(TRUE) {
         
@@ -71,76 +75,46 @@ int main(int argc, char const *argv[])
 
         //generating a small random error between -0.02 and 0.02
         random_error = (float)(-20 + rand() % 40) / 1000;
-        /*
-        int d = read(fd_X, &x, sizeof(x));
-        if (d == -1){
-            printf("Error in reading from pipe\n");
-            return 2;
-        }
-        */
+
         switch(select(FD_SETSIZE + 1, &readfds, NULL, NULL, &timeout)){
             case 0:
                 switch(x){
                     case 0:
                         printf("StoppedMotorX\n");
-                        int a = write(fd_insp, &position, sizeof(float));
-                        if (a == -1){
-                            printf("Error Occured writing on insp");
-                            return 5;
-                            }
+                        check(write(fd_insp, &position, sizeof(float)));
                         sleep(movement_time);
                         break;
                     case -1:
                         printf("Decreasing the speed of MotorX\n");
                         position -= movement;
-                        int aa = write(fd_insp, &position, sizeof(float));
-                        if (aa == -1){
-                            printf("Error Occured writing on insp");
-                            return 5;
-                            }
+                        check(write(fd_insp, &position, sizeof(float)));
                         sleep(movement_time);
                         break;
                     case 1:
                         printf("Increasing the speed of MotorX\n");
-                        movement = movement_distance;
+                        movement = movement_distance + random_error;
                         if(position + movement > x_max){
                             position = x_max;
-                            int b = write(fd_insp, &position, sizeof(float));
-                            if (b == -1){
-                                printf("Error Occured writing on insp");
-                                return 5;
-                            }
+                            int b = check(write(fd_insp, &position, sizeof(float)));
                         sleep(movement_time);
                         }
                         else{
                         position += movement;
-                        int ab = write(fd_insp, &position, sizeof(float));
-                        if (ab == -1){
-                            printf("Error Occured writing on insp");
-                            return 5;
-                            }
+                        check(write(fd_insp, &position, sizeof(float)));
                         }
                         sleep(movement_time);
                         break;
                     case 2:
                         printf("Stopped From Inspection Occured\n");
-                        int aaa = write(fd_insp, &position, sizeof(float));
-                        if (aaa == -1){
-                            printf("Error Occured writing on insp");
-                            return 5;
-                            }
-                        }
+                        check(write(fd_insp, &position, sizeof(float)));
                         sleep(movement_time);
                         break;
                     case 3:
                         printf("Reset Command Occured\n");
                         position = 0;
-                        int rs = write(fd_insp, &position, sizeof(float));
-                        if (rs == -1){
-                            printf("Error Occured writing on insp");
-                            return 6;
-                            }
+                        check(write(fd_insp, &position, sizeof(float)));
                         sleep(movement_time);
+                        }
                         break;    
             case -1:
                 printf("Error Occured");
