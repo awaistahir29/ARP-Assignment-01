@@ -92,12 +92,14 @@ int main(int argc, char const *argv[])
                     case 0:
                         printf("StoppedMotorX\n");
                         check(write(fd_insp, &position, sizeof(float)));
+                        //kill(pid_watchdog, SIGUSR1);
                         sleep(movement_time);
                         break;
                     case -1:
                         printf("Decreasing the speed of MotorX\n");
                         position -= movement;
                         check(write(fd_insp, &position, sizeof(float)));
+                        //kill(pid_watchdog, SIGUSR1);
                         sleep(movement_time);
                         break;
                     case 1:
@@ -106,23 +108,26 @@ int main(int argc, char const *argv[])
                         if(position + movement > x_max){
                             position = x_max;
                             int b = check(write(fd_insp, &position, sizeof(float)));
+                        //kill(pid_watchdog, SIGUSR1);
                         sleep(movement_time);
                         }
                         else{
                         position += movement;
-                        check(write(fd_insp, &position, sizeof(float)));
-                        }
+                        check(write(fd_insp, &position, sizeof(float)));}
+                        //kill(pid_watchdog, SIGUSR1);
                         sleep(movement_time);
                         break;
                     case 2:
                         printf("Stopped From Inspection Occured\n");
                         check(write(fd_insp, &position, sizeof(float)));
+                        //kill(pid_watchdog, SIGUSR1);
                         sleep(movement_time);
                         break;
                     case 3:
                         printf("Reset Command Occured\n");
                         position = 0;
                         check(write(fd_insp, &position, sizeof(float)));
+                        //kill(pid_watchdog, SIGUSR1);
                         sleep(movement_time);
                         }
                         break;    
@@ -147,7 +152,6 @@ int main(int argc, char const *argv[])
     // Closing all opened file descripters and unlinking the fifo files
     check(close(fd_X));
     unlink(motorX_fifo);
-
 
     check(close(fd_insp));
     unlink(inspection_fifo);
