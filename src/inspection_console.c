@@ -146,6 +146,6 @@ int main(int argc, char const *argv[])
 
     check(close(fd_z));
     unlink(motorZ_fifo);
-
+//return value
     return 0;
 }
