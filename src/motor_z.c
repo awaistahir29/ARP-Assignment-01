@@ -33,6 +33,29 @@ int check(int retval)
 
 int main(int argc, char const *argv[])
 {
+    logfile = fopen("MotorZ.txt", "a");
+    if (logfile == NULL)
+    {
+        printf("an error occured while creating MotorZ's log File\n");
+        return 0;
+    }
+    fprintf(logfile, "***log file created***\n");
+    fflush(logfile);
+
+    //Writing in log file
+    fprintf(logfile, "p - position of the Z motor\n");
+    fprintf(logfile, "p - maximum position of Z motor\n");
+    fprintf(logfile, "p - the amount of movement made after receiving a command\n");
+    fprintf(logfile, "p - the amount of seconds needed to do the movement\n");
+    fflush(logfile);
+
+    //randomizing seed for random error generator
+    srand(time(NULL));
+    fflush(stdout);
+
+    //Writing in log file
+    fprintf(logfile, "randomizing seed for random error generator\n");
+    fflush(logfile);
     float movement;
     float position = 0.0;
     float y_max = 9.00;
@@ -47,6 +70,9 @@ int main(int argc, char const *argv[])
     char *inspection_fifoZ = "/tmp/insp_fifoZ";
     
     int r = mkfifo(inspection_fifoZ, 0666);
+    //Writing in log file
+    fprintf(logfile, "p - FIFO connections have been established\n");
+    fflush(logfile);
     if (r == -1){
         if (errno != EEXIST){
             return 1;
@@ -145,6 +171,10 @@ int main(int argc, char const *argv[])
 
     close(fd_insp_z);
     unlink(inspection_fifoZ);
+
+    //Writing in log file
+    fprintf(logfile, "p - Files have closed and unlinked\n");
+    fflush(logfile);
 
     return 0;
 }
