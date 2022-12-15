@@ -33,6 +33,17 @@ int check(int retval)
 
 int main(int argc, char const *argv[])
 {
+    //open Log file
+    logfile = fopen("Command_Comsole.txt", "a");
+    if (logfile == NULL)
+    {
+        printf("an error occured while creating Command Console's log File\n");
+        return 0;
+    }
+    fprintf(logfile, "***log file created***\n");
+    fflush(logfile);
+
+
     // Utility variable to avoid trigger resize event on launch
     int first_resize = TRUE;
 
@@ -54,10 +65,17 @@ int main(int argc, char const *argv[])
 
     mkfifo(motorZ_fifo, 0777);
     mkfifo(watchdog_fifo, 0777);
+    fprintf(logfile, "p - fifo files have created and connection has been established\n");
+
+    fflush(logfile);
 
 
     int fd_X = check(open(motorX_fifo, O_RDWR));
+    fprintf(logfile, "Opened fifo file for motorX\n");
+    fflush(logfile);
     int fd_z = check(open(motorZ_fifo, O_RDWR));
+    fprintf(logfile, "Opened fifo file for MotorZ\n");
+    fflush(logfile);
     int fd_WD = check(open(watchdog_fifo, O_RDWR));
 
     // Infinite loop
@@ -111,6 +129,9 @@ int main(int argc, char const *argv[])
                 else if(check_button_pressed(vx_stp_button, &event)) {
                     mvprintw(LINES - 1, 1, "Horizontal Motor Stopped");
                     refresh();
+                    printf(logfile, "p - STOP MOTOR_X\n");
+                    fprintf(logfile, "p - Wrote on fifo file\n");
+                    fflush(logfile);
                     sleep(1);
                     for(int j = 0; j < COLS; j++) {
                         mvaddch(LINES - 1, j, ' ');
@@ -150,6 +171,9 @@ int main(int argc, char const *argv[])
                 else if(check_button_pressed(vz_stp_button, &event)) {
                     mvprintw(LINES - 1, 1, "Vertical Motor Stopped");
                     refresh();
+                    fprintf(logfile, "p - STOP MOTOR_X\n");
+                    fprintf(logfile, "p - Wrote on fifo file\n");
+                    fflush(logfile);
                     sleep(1);
                     for(int j = 0; j < COLS; j++) {
                         mvaddch(LINES - 1, j, ' ');
@@ -176,9 +200,11 @@ int main(int argc, char const *argv[])
 
     check(close(fd_X));
     unlink(motorX_fifo);
+    fprintf(logfile, "p - UNLINKED PIPE FO MOTOR X\n");
 
     check(close(fd_z));
     unlink(motorZ_fifo);
+    fprintf(logfile, "p - UNLINKED PIPE FOR MOTOR Z\n");
 
     return 0;
 }

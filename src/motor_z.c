@@ -12,10 +12,15 @@
 #include <fcntl.h>
 #include <errno.h>
 
+#define SIZE 80
+
 //pointer to log file
 FILE *logfile;
 
 int x;
+
+int pid_watchdog;
+char buffer[SIZE];
 
 int check(int retval)
 {
@@ -33,6 +38,29 @@ int check(int retval)
 
 int main(int argc, char const *argv[])
 {
+    logfile = fopen("MotorZ.txt", "a");
+    if (logfile == NULL)
+    {
+        printf("an error occured while creating MotorZ's log File\n");
+        return 0;
+    }
+    fprintf(logfile, "***log file created***\n");
+    fflush(logfile);
+
+    //Writing in log file
+    fprintf(logfile, "p - position of the Z motor\n");
+    fprintf(logfile, "p - maximum position of Z motor\n");
+    fprintf(logfile, "p - the amount of movement made after receiving a command\n");
+    fprintf(logfile, "p - the amount of seconds needed to do the movement\n");
+    fflush(logfile);
+
+    //randomizing seed for random error generator
+    srand(time(NULL));
+    fflush(stdout);
+
+    //Writing in log file
+    fprintf(logfile, "randomizing seed for random error generator\n");
+    fflush(logfile);
     float movement;
     float position = 0.0;
     float y_max = 9.00;
@@ -47,6 +75,9 @@ int main(int argc, char const *argv[])
     char *inspection_fifoZ = "/tmp/insp_fifoZ";
     
     int r = mkfifo(inspection_fifoZ, 0666);
+    //Writing in log file
+    fprintf(logfile, "p - FIFO connections have been established\n");
+    fflush(logfile);
     if (r == -1){
         if (errno != EEXIST){
             return 1;
@@ -59,6 +90,15 @@ int main(int argc, char const *argv[])
 
     fd_set read_fd;
     struct timeval timeout;
+
+    char *fifo_watchdog_pid = "/tmp/watchdog_pid_z";
+    mkfifo(fifo_watchdog_pid, 0666);
+
+    //getting watchdog pid
+    int fd_watchdog_pid = check(open(fifo_watchdog_pid, O_RDONLY));
+    check(read(fd_watchdog_pid, buffer, SIZE));
+    pid_watchdog = atoi(buffer);
+    check(close(fd_watchdog_pid));
 
     FD_ZERO(&read_fd);
 
@@ -79,11 +119,8 @@ int main(int argc, char const *argv[])
                 switch(x){
                     case 0:
                         printf("Stopping the MotorZ\n");
-                        int a = write(fd_insp_z, &position, sizeof(float));
-                        if (a == -1){
-                            printf("Error Occured writing on insp");
-                            return 5;
-                            }
+                        check(write(fd_insp_z, &position, sizeof(float)));
+                        kill(pid_watchdog, SIGUSR1);
                         sleep(movement_time);
                         break;
                     case -1:
@@ -145,6 +182,10 @@ int main(int argc, char const *argv[])
 
     close(fd_insp_z);
     unlink(inspection_fifoZ);
+
+    //Writing in log file
+    fprintf(logfile, "p - Files have closed and unlinked\n");
+    fflush(logfile);
 
     return 0;
 }

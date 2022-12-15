@@ -12,7 +12,7 @@
 
 #define SIZE 80
 
-#define TIMEDELTA 20
+#define TIMEDELTA 10
 
 //pointer to log file
 FILE *logfile;
@@ -64,18 +64,29 @@ int main(int argc, char const *argv[])
     signal(SIGUSR1, signal_handler);
 
     char *fifo_watchdog_pid_motX = "/tmp/watchdog_pid_x";
+    char *fifo_watchdog_pid_motZ = "/tmp/watchdog_pid_z";
+    char *fifo_motX_pid = "/tmp/pid_x";
 
+    mkfifo(fifo_watchdog_pid_motZ, 0666);
     mkfifo(fifo_watchdog_pid_motX, 0666);
+    mkfifo(fifo_motX_pid, 0666);
 
     int fd_watchdog_pid_motX = check(open(fifo_watchdog_pid_motX, O_WRONLY));
-
-    check(write(fd_watchdog_pid_motX, buffer, strlen(buffer) + 1));
     sprintf(buffer, "%d", (int)getpid());
-
+    check(write(fd_watchdog_pid_motX, buffer, strlen(buffer) + 1));
     check(close(fd_watchdog_pid_motX));
     unlink(fifo_watchdog_pid_motX);
 
-    
+    int fd_watchdog_pid_motZ = check(open(fifo_watchdog_pid_motZ, O_WRONLY));
+    sprintf(buffer, "%d", (int)getpid());
+    check(write(fd_watchdog_pid_motZ, buffer, strlen(buffer) + 1));
+    check(close(fd_watchdog_pid_motZ));
+    unlink(fifo_watchdog_pid_motZ);
+
+
+    int fd_pid_motX = check(open(fifo_motX_pid, O_RDONLY));
+    check(read(fd_pid_motX,buffer,SIZE));
+    pid_motX=atoi(buffer);
 
     time_check = time(NULL);
 
@@ -90,7 +101,7 @@ int main(int argc, char const *argv[])
             printf("Session Expired \n");
             fprintf(logfile, "-------------Time Out------------\n");
 
-            // kill(pid_motX, SIGUSR2);
+            kill(pid_motX, SIGUSR1);
 
             ////Writing in log file
             fprintf(logfile, "p - MotorX process has killed\n");
