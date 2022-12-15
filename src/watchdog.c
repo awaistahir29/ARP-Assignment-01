@@ -44,6 +44,7 @@ int check(int retval)
 void signal_handler(int sig)
 {
     time_check = time(NULL);
+    printf("Received Signal\n");
 }
 
 int main(int argc, char const *argv[])
@@ -58,6 +59,7 @@ int main(int argc, char const *argv[])
     fprintf(logfile, "******log file created******\n");
     fflush(logfile);
 
+    printf("Ready to receive Receive Signal\n");
 
     signal(SIGUSR1, signal_handler);
 
@@ -72,6 +74,8 @@ int main(int argc, char const *argv[])
 
     check(close(fd_watchdog_pid_motX));
     unlink(fifo_watchdog_pid_motX);
+
+    
 
     time_check = time(NULL);
 

@@ -359,6 +359,56 @@ p - Sleeping
 p - Sleeping
 p - Sleeping
 p - Sleeping
+<<<<<<< HEAD
+=======
+******log file created******
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+******log file created******
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+>>>>>>> main
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+-------------Time Out------------
+p - MotorX process has killed
+p - MotorZ process has killed
+p - Sleeping
+p - Sleeping
+p - Sleeping
+<<<<<<< HEAD
+=======
+******log file created******
+p - Sleeping
+p - Sleeping
+******log file created******
+p - Sleeping
+p - Sleeping
+p - Sleeping
+>>>>>>> main
+p - Sleeping
+p - Sleeping
+p - Sleeping
 p - Sleeping
 p - Sleeping
 p - Sleeping
@@ -389,6 +439,26 @@ p - Sleeping
 p - Sleeping
 p - Sleeping
 p - Sleeping
+<<<<<<< HEAD
+=======
+******log file created******
+p - Sleeping
+p - Sleeping
+p - Sleeping
+******log file created******
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
 p - Sleeping
 p - Sleeping
 p - Sleeping
@@ -400,18 +470,7 @@ p - Sleeping
 p - MotorX process has killed
 p - MotorZ process has killed
 p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
+>>>>>>> main
 p - Sleeping
 p - Sleeping
 p - Sleeping
@@ -445,6 +504,38 @@ p - Sleeping
 p - Sleeping
 p - Sleeping
 p - Sleeping
+<<<<<<< HEAD
+=======
+******log file created******
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+******log file created******
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+******log file created******
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+>>>>>>> main
 p - Sleeping
 p - Sleeping
 p - Sleeping
@@ -464,6 +555,9 @@ p - Sleeping
 -------------Time Out------------
 p - MotorX process has killed
 p - MotorZ process has killed
+<<<<<<< HEAD
+=======
+******log file created******
 p - Sleeping
 p - Sleeping
 p - Sleeping
@@ -475,64 +569,21 @@ p - Sleeping
 p - Sleeping
 p - Sleeping
 p - Sleeping
+******log file created******
+p - Sleeping
+p - Sleeping
+******log file created******
+p - Sleeping
+p - Sleeping
+******log file created******
 p - Sleeping
 p - Sleeping
 p - Sleeping
 p - Sleeping
 p - Sleeping
 p - Sleeping
+******log file created******
 p - Sleeping
-p - Sleeping
-p - Sleeping
--------------Time Out------------
-p - MotorX process has killed
-p - MotorZ process has killed
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
--------------Time Out------------
-p - MotorX process has killed
-p - MotorZ process has killed
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
-p - Sleeping
--------------Time Out------------
-p - MotorX process has killed
-p - MotorZ process has killed
 p - Sleeping
 p - Sleeping
 p - Sleeping
@@ -555,6 +606,130 @@ p - Sleeping
 p - Sleeping
 p - Sleeping
 p - Sleeping
+******log file created******
+p - Sleeping
+p - Sleeping
+******log file created******
+>>>>>>> main
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+-------------Time Out------------
+p - MotorX process has killed
+p - MotorZ process has killed
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+<<<<<<< HEAD
+=======
+******log file created******
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+>>>>>>> main
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+-------------Time Out------------
+p - MotorX process has killed
+p - MotorZ process has killed
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+-------------Time Out------------
+p - MotorX process has killed
+p - MotorZ process has killed
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+<<<<<<< HEAD
+******log file created******
+=======
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+-------------Time Out------------
+p - MotorX process has killed
+p - MotorZ process has killed
+>>>>>>> main
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
 p - Sleeping
 p - Sleeping
 p - Sleeping
@@ -612,3 +787,19 @@ p - Sleeping
 p - MotorX process has killed
 p - MotorZ process has killed
 p - Sleeping
+<<<<<<< HEAD
+=======
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+p - Sleeping
+>>>>>>> main
