@@ -11,12 +11,15 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
-
+#define SIZE 80
 
 //pointer to log file
 FILE *logfile;
 
 int x;
+
+int pid_watchdog;
+char buffer[SIZE];
 
 int check(int retval)
 {
@@ -49,7 +52,14 @@ int main(int argc, char const *argv[])
     fd_set readfds;
     struct timeval timeout;
 
-    
+    char *fifo_watchdog_pid = "/tmp/watchdog_pid_x";
+    mkfifo(fifo_watchdog_pid, 0666);
+
+    //getting watchdog pid
+    int fd_watchdog_pid = check(open(fifo_watchdog_pid, O_RDONLY));
+    check(read(fd_watchdog_pid, buffer, SIZE));
+    pid_watchdog = atoi(buffer);
+    check(close(fd_watchdog_pid));
 
     // Path to the named pipe
     char *motorX_fifo = "/tmp/motorX_fifo";

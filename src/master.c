@@ -31,14 +31,14 @@ int main() {
   char * arg_list_inspection[] = { "/usr/bin/konsole", "-e", "./bin/inspection", NULL };
   char * arg_list_motorX[] = {"/usr/bin/konsole", "-e", "./bin/motorX", "", NULL};
   char * arg_list_motorZ[] = {"/usr/bin/konsole", "-e", "./bin/motorZ", "", NULL};
-  char * arg_list_watchdog[] = {"./bin/watchdog", "", NULL};
+  char * arg_list_watchdog[] = {"/usr/bin/konsole", "-e","./bin/watchdog", "", NULL};
 
   pid_t motor_x = spawn("/usr/bin/konsole", arg_list_motorX);
 
   pid_t pid_insp = spawn("/usr/bin/konsole", arg_list_inspection);
   
   pid_t motor_z = spawn("/usr/bin/konsole", arg_list_motorZ);
-  pid_t watchdog = spawn("./bin/watchdog", arg_list_watchdog);
+  pid_t watchdog = spawn("/usr/bin/konsole", arg_list_watchdog);
   pid_t pid_cmd = spawn("/usr/bin/konsole", arg_list_command);
 
   int status;

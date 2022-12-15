@@ -12,7 +12,7 @@
 
 #define SIZE 80
 
-#define TIMEDELTA 60
+#define TIMEDELTA 20
 
 //pointer to log file
 FILE *logfile;
@@ -48,7 +48,58 @@ void signal_handler(int sig)
 
 int main(int argc, char const *argv[])
 {
+    //open Log file
+    logfile = fopen("Watchdog.txt", "a");
+    if (logfile == NULL)
+    {
+        printf("an error occured while creating Watchdog's log File\n");
+        return 0;
+    }
+    fprintf(logfile, "******log file created******\n");
+    fflush(logfile);
 
 
+    signal(SIGUSR1, signal_handler);
+
+    char *fifo_watchdog_pid_motX = "/tmp/watchdog_pid_x";
+
+    mkfifo(fifo_watchdog_pid_motX, 0666);
+
+    int fd_watchdog_pid_motX = check(open(fifo_watchdog_pid_motX, O_WRONLY));
+
+    check(write(fd_watchdog_pid_motX, buffer, strlen(buffer) + 1));
+    sprintf(buffer, "%d", (int)getpid());
+
+    check(close(fd_watchdog_pid_motX));
+    unlink(fifo_watchdog_pid_motX);
+
+    time_check = time(NULL);
+
+    while (1)
+    {
+        sleep(1);
+        ////Writing in log file
+        fprintf(logfile, "p - Sleeping\n");
+        fflush(logfile);
+        if (difftime(time(NULL), time_check) >= TIMEDELTA)
+        {   
+            printf("Session Expired \n");
+            fprintf(logfile, "-------------Time Out------------\n");
+
+            // kill(pid_motX, SIGUSR2);
+
+            ////Writing in log file
+            fprintf(logfile, "p - MotorX process has killed\n");
+            fflush(logfile);
+
+            // kill(pid_motZ, SIGUSR2);
+
+            //Writing in log file
+            fprintf(logfile, "p - MotorZ process has killed\n");
+            fflush(logfile);
+
+            time_check = time(NULL);
+        }
+    }
     return 0;
 }
