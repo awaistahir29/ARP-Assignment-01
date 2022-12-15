@@ -36,6 +36,11 @@ int check(int retval)
     return retval;
 }
 
+void sigusr1_handler(int sig)
+{
+    printf("Killig the MotorZ \n");
+}
+
 int main(int argc, char const *argv[])
 {
     logfile = fopen("MotorZ.txt", "a");
@@ -55,7 +60,7 @@ int main(int argc, char const *argv[])
     fflush(logfile);
 
     //randomizing seed for random error generator
-    srand(time(NULL));
+    //srand(time(NULL));
     fflush(stdout);
 
     //Writing in log file
@@ -69,10 +74,15 @@ int main(int argc, char const *argv[])
 
     float random_error;
 
+    signal(SIGUSR1, sigusr1_handler);
+
     // Path to the named pipe
     char *motorX_fifo = "/tmp/motorX_fifo";
     char *motorZ_fifo = "/tmp/motorZ_fifo";
     char *inspection_fifoZ = "/tmp/insp_fifoZ";
+    char *fifo_motZ_pid = "/tmp/pid_z";
+
+    mkfifo(fifo_motZ_pid, 0666);
     
     int r = mkfifo(inspection_fifoZ, 0666);
     //Writing in log file
@@ -99,6 +109,12 @@ int main(int argc, char const *argv[])
     check(read(fd_watchdog_pid, buffer, SIZE));
     pid_watchdog = atoi(buffer);
     check(close(fd_watchdog_pid));
+
+    //writing own pid
+    int fd_motZ_pid = check(open(fifo_motZ_pid, O_WRONLY));
+    sprintf(buffer, "%d", (int)getpid());
+    check(write(fd_motZ_pid, buffer, SIZE));
+    check(close(fd_motZ_pid));
 
     FD_ZERO(&read_fd);
 

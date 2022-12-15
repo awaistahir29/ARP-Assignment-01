@@ -66,10 +66,12 @@ int main(int argc, char const *argv[])
     char *fifo_watchdog_pid_motX = "/tmp/watchdog_pid_x";
     char *fifo_watchdog_pid_motZ = "/tmp/watchdog_pid_z";
     char *fifo_motX_pid = "/tmp/pid_x";
+    char *fifo_motZ_pid = "/tmp/pid_z";
 
     mkfifo(fifo_watchdog_pid_motZ, 0666);
     mkfifo(fifo_watchdog_pid_motX, 0666);
     mkfifo(fifo_motX_pid, 0666);
+    mkfifo(fifo_motZ_pid, 0666);
 
     int fd_watchdog_pid_motX = check(open(fifo_watchdog_pid_motX, O_WRONLY));
     sprintf(buffer, "%d", (int)getpid());
@@ -87,6 +89,10 @@ int main(int argc, char const *argv[])
     int fd_pid_motX = check(open(fifo_motX_pid, O_RDONLY));
     check(read(fd_pid_motX,buffer,SIZE));
     pid_motX=atoi(buffer);
+
+    int fd_pid_motZ = check(open(fifo_motZ_pid, O_RDONLY));
+    check(read(fd_pid_motZ,buffer,SIZE));
+    pid_motZ=atoi(buffer);
 
     time_check = time(NULL);
 
@@ -107,7 +113,7 @@ int main(int argc, char const *argv[])
             fprintf(logfile, "p - MotorX process has killed\n");
             fflush(logfile);
 
-            // kill(pid_motZ, SIGUSR2);
+            kill(pid_motZ, SIGUSR1);
 
             //Writing in log file
             fprintf(logfile, "p - MotorZ process has killed\n");

@@ -129,7 +129,7 @@ int main(int argc, char const *argv[])
                 else if(check_button_pressed(vx_stp_button, &event)) {
                     mvprintw(LINES - 1, 1, "Horizontal Motor Stopped");
                     refresh();
-                    printf(logfile, "p - STOP MOTOR_X\n");
+                    //printf(logfile, "p - STOP MOTOR_X\n");
                     fprintf(logfile, "p - Wrote on fifo file\n");
                     fflush(logfile);
                     sleep(1);
