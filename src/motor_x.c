@@ -37,7 +37,22 @@ int check(int retval)
 
 int main(int argc, char const *argv[])
 {
-    
+    //open Log file
+    logfile = fopen("MotorX.txt", "a");
+    if (logfile == NULL)
+    {
+        printf("an error occured while creating Unnamed_pipe's log File\n");
+        return 0;
+    }
+    fprintf(logfile, "***log file created***\n");
+    fflush(logfile);
+
+    //Writing in log file
+    fprintf(logfile, "p - position of the X motor\n");
+    fprintf(logfile, "p - mazimum position of X motor\n");
+    fprintf(logfile, "p - the amount of movement made after receiving a command\n");
+    fprintf(logfile, "p - the amount of seconds needed to do the movement\n");
+    fflush(logfile);
     float random_error;
     float x_min = 00.00;
     float x_max = 39.00;
@@ -54,7 +69,9 @@ int main(int argc, char const *argv[])
 
     char *fifo_watchdog_pid = "/tmp/watchdog_pid_x";
     mkfifo(fifo_watchdog_pid, 0666);
-
+    
+    fprintf(logfile, "p - FIFO FILES HAVE MADE AND CONNECTED\n");
+    fflush(logfile);
     //getting watchdog pid
     int fd_watchdog_pid = check(open(fifo_watchdog_pid, O_RDONLY));
     check(read(fd_watchdog_pid, buffer, SIZE));
