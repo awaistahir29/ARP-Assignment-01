@@ -78,14 +78,11 @@ int main(int argc, char const *argv[])
     char *fifo_motX_pid = "/tmp/pid_x";
 
     mkfifo(fifo_watchdog_pid, 0666);
-<<<<<<< HEAD
     mkfifo(fifo_motX_pid, 0666);
-
-=======
     
     fprintf(logfile, "p - FIFO FILES HAVE MADE AND CONNECTED\n");
     fflush(logfile);
->>>>>>> main
+    
     //getting watchdog pid
     int fd_watchdog_pid = check(open(fifo_watchdog_pid, O_RDONLY));
     check(read(fd_watchdog_pid, buffer, SIZE));
