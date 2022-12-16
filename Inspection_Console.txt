@@ -11,3 +11,15 @@ ERROR (src/inspection_console.c:22) -- Interrupted system call
 ***log file created***
 
 ERROR (src/inspection_console.c:22) -- Interrupted system call
+***log file created***
+
+ERROR (src/inspection_console.c:22) -- Interrupted system call
+***log file created***
+
+ERROR (src/inspection_console.c:22) -- Interrupted system call
+***log file created***
+
+ERROR (src/inspection_console.c:22) -- Interrupted system call
+***log file created***
+
+ERROR (src/inspection_console.c:22) -- Interrupted system call

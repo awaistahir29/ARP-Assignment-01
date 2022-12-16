@@ -47,3 +47,31 @@ p - the amount of movement made after receiving a command
 p - the amount of seconds needed to do the movement
 randomizing seed for random error generator
 p - FIFO connections have been established
+***log file created***
+p - position of the Z motor
+p - maximum position of Z motor
+p - the amount of movement made after receiving a command
+p - the amount of seconds needed to do the movement
+randomizing seed for random error generator
+p - FIFO connections have been established
+***log file created***
+p - position of the Z motor
+p - maximum position of Z motor
+p - the amount of movement made after receiving a command
+p - the amount of seconds needed to do the movement
+randomizing seed for random error generator
+p - FIFO connections have been established
+***log file created***
+p - position of the Z motor
+p - maximum position of Z motor
+p - the amount of movement made after receiving a command
+p - the amount of seconds needed to do the movement
+randomizing seed for random error generator
+p - FIFO connections have been established
+***log file created***
+p - position of the Z motor
+p - maximum position of Z motor
+p - the amount of movement made after receiving a command
+p - the amount of seconds needed to do the movement
+randomizing seed for random error generator
+p - FIFO connections have been established
