@@ -120,9 +120,9 @@ int main(int argc, char const *argv[])
                     for(int j = 0; j < COLS; j++) {
                         mvaddch(LINES - 1, j, ' ');
                     }
-                    int i = +1;
+                    int p = 1;
                     //char buf[80];
-                    check(write(fd_X, &i, sizeof(int)));
+                    check(write(fd_X, &p, sizeof(int)));
                 }
 
                 // Vx stop button pressed
@@ -162,7 +162,7 @@ int main(int argc, char const *argv[])
                     for(int j = 0; j < COLS; j++) {
                         mvaddch(LINES - 1, j, ' ');
                     }
-                    int iz = +1;
+                    int iz = 1;
                     //char buf[80];
                     check(write(fd_z, &iz, sizeof(iz)));
                 }

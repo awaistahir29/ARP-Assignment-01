@@ -147,13 +147,12 @@ int main(int argc, char const *argv[])
                             position = x_max;
                             int b = check(write(fd_insp, &position, sizeof(float)));
                         //kill(pid_watchdog, SIGUSR1);
-                        sleep(movement_time);
-                        }
+                        sleep(movement_time);}
                         else{
                         position += movement;
                         check(write(fd_insp, &position, sizeof(float)));
-                        kill(pid_watchdog, SIGUSR1);}
-                        sleep(movement_time);
+                        kill(pid_watchdog, SIGUSR1);
+                        sleep(movement_time);}
                         break;
                     case 2:
                         printf("Stopped From Inspection Occured\n");
@@ -170,7 +169,7 @@ int main(int argc, char const *argv[])
                         }
                         break;    
             case -1:
-                printf("Error Occured");
+                printf("No Command Received\n");
                 break;
             default:
                 if (FD_ISSET(fd_X, &readfds))

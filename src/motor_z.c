@@ -176,7 +176,7 @@ int main(int argc, char const *argv[])
                         }
                         break;    
             case -1:
-            printf("Error Occured\n");
+            printf("No Command Received\n");
             break;
 
             default:

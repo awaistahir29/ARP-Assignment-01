@@ -43,15 +43,20 @@ int main(int argc, char const *argv[])
     fprintf(logfile, "***log file created***\n");
     fflush(logfile);
     */
-    char *inspection_fifo = "/tmp/insp_fifo";
-    char *inspection_fifoZ = "/tmp/insp_fifoZ";
-    char *motorX_fifo = "/tmp/motorX_fifo";
-    char *motorZ_fifo = "/tmp/motorZ_fifo";
+    char *inspection_fifo_insp = "/tmp/insp_fifo";
+    char *inspection_fifoZ_insp = "/tmp/insp_fifoZ";
+    char *motorX_fifo_insp = "/tmp/motorX_fifo";
+    char *motorZ_fifo_insp = "/tmp/motorZ_fifo";
 
-    int fd_z = check(open(motorZ_fifo, O_RDWR));
-    int fd_motor_X = check(open(motorX_fifo, O_RDWR));
-    int fd_insp = check(open(inspection_fifo, O_RDWR));
-    int fd_insp_z = check(open(inspection_fifoZ, O_RDWR));
+    mkfifo(inspection_fifo_insp,0666);
+    mkfifo(inspection_fifoZ_insp,0666);
+    mkfifo(motorX_fifo_insp,0666);
+    mkfifo(motorZ_fifo_insp,0666);
+
+    int fd_z = check(open(motorZ_fifo_insp, O_RDWR));
+    int fd_motor_X = check(open(motorX_fifo_insp, O_RDWR));
+    int fd_insp = check(open(inspection_fifo_insp, O_RDWR));
+    int fd_insp_z = check(open(inspection_fifoZ_insp, O_RDWR));
     
     printf("Opened FIle Z\n");
 
@@ -115,8 +120,8 @@ int main(int argc, char const *argv[])
         }
         
         //float x;
-        int d = check(read(fd_insp, &ee_x, sizeof(float)));
-        int e = check(read(fd_insp_z, &ee_y, sizeof(float)));
+        check(read(fd_insp, &ee_x, sizeof(float)));
+        check(read(fd_insp_z, &ee_y, sizeof(float)));
         /*
         
         // To be commented in final version...
@@ -148,16 +153,16 @@ int main(int argc, char const *argv[])
     endwin();
 
     check(close(fd_insp));
-    unlink(inspection_fifo);
+    unlink(inspection_fifo_insp);
 
     check(close(fd_insp_z));
-    unlink(inspection_fifoZ);
+    unlink(inspection_fifoZ_insp);
 
     check(close(fd_motor_X));
-    unlink(motorX_fifo);
+    unlink(motorX_fifo_insp);
 
     check(close(fd_z));
-    unlink(motorZ_fifo);
+    unlink(motorZ_fifo_insp);
 //return value
     return 0;
 }
