@@ -21,6 +21,9 @@ int x;
 int pid_watchdog;
 char buffer[SIZE];
 
+int fd_insp;
+float position = 0;  //position of the X motor
+
 int check(int retval)
 {
     if (retval == -1)
@@ -37,7 +40,8 @@ int check(int retval)
 
 void sigusr1_handler(int sig)
 {
-    printf("Killig the MotorX \n");
+    position = 0;
+    check(write(fd_insp, &position, sizeof(float)));
 }
 
 int main(int argc, char const *argv[])
@@ -62,7 +66,7 @@ int main(int argc, char const *argv[])
     float x_min = 00.00;
     float x_max = 39.00;
 
-    float position = 0;             //position of the X motor
+
     float max_x = 1;                //maximum position of X motor
     float movement_distance = 1.00; //the amount of movement made after receiving a command
     float movement_time = 1;        //the amount of seconds needed to do the movement
@@ -82,7 +86,7 @@ int main(int argc, char const *argv[])
     
     fprintf(logfile, "p - FIFO FILES HAVE MADE AND CONNECTED\n");
     fflush(logfile);
-    
+
     //getting watchdog pid
     int fd_watchdog_pid = check(open(fifo_watchdog_pid, O_RDONLY));
     check(read(fd_watchdog_pid, buffer, SIZE));
@@ -108,7 +112,7 @@ int main(int argc, char const *argv[])
     }
 
     int fd_X = check(open(motorX_fifo, O_RDWR));
-    int fd_insp = check(open(inspection_fifo, O_RDWR));
+    fd_insp = check(open(inspection_fifo, O_RDWR));
     
     while(TRUE) {
         

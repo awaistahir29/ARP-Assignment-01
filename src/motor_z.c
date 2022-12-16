@@ -22,6 +22,9 @@ int x;
 int pid_watchdog;
 char buffer[SIZE];
 
+float position = 0.0;
+int fd_insp_z;
+
 int check(int retval)
 {
     if (retval == -1)
@@ -38,7 +41,8 @@ int check(int retval)
 
 void sigusr1_handler(int sig)
 {
-    printf("Killig the MotorZ \n");
+    position = 0;
+    check(write(fd_insp_z, &position, sizeof(float)));
 }
 
 int main(int argc, char const *argv[])
@@ -67,7 +71,7 @@ int main(int argc, char const *argv[])
     fprintf(logfile, "randomizing seed for random error generator\n");
     fflush(logfile);
     float movement;
-    float position = 0.0;
+    
     float y_max = 9.00;
     float movement_distance = 0.25;
     float movement_time = 1;
@@ -96,7 +100,7 @@ int main(int argc, char const *argv[])
     }
 
     int fd_z = check(open(motorZ_fifo, O_RDWR));
-    int fd_insp_z = check(open(inspection_fifoZ, O_RDWR));
+    fd_insp_z = check(open(inspection_fifoZ, O_RDWR));
 
     fd_set read_fd;
     struct timeval timeout;

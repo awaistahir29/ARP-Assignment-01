@@ -166,3 +166,15 @@ Opened fifo file for MotorZ
 p - fifo files have created and connection has been established
 Opened fifo file for motorX
 Opened fifo file for MotorZ
+***log file created***
+p - fifo files have created and connection has been established
+Opened fifo file for motorX
+Opened fifo file for MotorZ
+***log file created***
+p - fifo files have created and connection has been established
+Opened fifo file for motorX
+Opened fifo file for MotorZ
+***log file created***
+p - fifo files have created and connection has been established
+Opened fifo file for motorX
+Opened fifo file for MotorZ
