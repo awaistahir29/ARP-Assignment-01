@@ -31,6 +31,7 @@ int check(int retval)
 
 int main(int argc, char const *argv[])
 {
+    /*
     //open Log file
     logfile = fopen("Inspection_Console.txt", "a");
     if (logfile == NULL)
@@ -38,8 +39,10 @@ int main(int argc, char const *argv[])
         printf("an error occured while creating Command Console's log File\n");
         return 0;
     }
+    
     fprintf(logfile, "***log file created***\n");
     fflush(logfile);
+    */
     char *inspection_fifo = "/tmp/insp_fifo";
     char *inspection_fifoZ = "/tmp/insp_fifoZ";
     char *motorX_fifo = "/tmp/motorX_fifo";
