@@ -12,10 +12,15 @@
 #include <fcntl.h>
 #include <errno.h>
 
+#define SIZE 80
+
 //pointer to log file
 FILE *logfile;
 
 int x;
+
+int pid_watchdog;
+char buffer[SIZE];
 
 int check(int retval)
 {
@@ -29,6 +34,11 @@ int check(int retval)
         exit(-1);
     }
     return retval;
+}
+
+void sigusr1_handler(int sig)
+{
+    printf("Killig the MotorZ \n");
 }
 
 int main(int argc, char const *argv[])
@@ -50,7 +60,7 @@ int main(int argc, char const *argv[])
     fflush(logfile);
 
     //randomizing seed for random error generator
-    srand(time(NULL));
+    //srand(time(NULL));
     fflush(stdout);
 
     //Writing in log file
@@ -64,10 +74,15 @@ int main(int argc, char const *argv[])
 
     float random_error;
 
+    signal(SIGUSR1, sigusr1_handler);
+
     // Path to the named pipe
     char *motorX_fifo = "/tmp/motorX_fifo";
     char *motorZ_fifo = "/tmp/motorZ_fifo";
     char *inspection_fifoZ = "/tmp/insp_fifoZ";
+    char *fifo_motZ_pid = "/tmp/pid_z";
+
+    mkfifo(fifo_motZ_pid, 0666);
     
     int r = mkfifo(inspection_fifoZ, 0666);
     //Writing in log file
@@ -85,6 +100,21 @@ int main(int argc, char const *argv[])
 
     fd_set read_fd;
     struct timeval timeout;
+
+    char *fifo_watchdog_pid = "/tmp/watchdog_pid_z";
+    mkfifo(fifo_watchdog_pid, 0666);
+
+    //getting watchdog pid
+    int fd_watchdog_pid = check(open(fifo_watchdog_pid, O_RDONLY));
+    check(read(fd_watchdog_pid, buffer, SIZE));
+    pid_watchdog = atoi(buffer);
+    check(close(fd_watchdog_pid));
+
+    //writing own pid
+    int fd_motZ_pid = check(open(fifo_motZ_pid, O_WRONLY));
+    sprintf(buffer, "%d", (int)getpid());
+    check(write(fd_motZ_pid, buffer, SIZE));
+    check(close(fd_motZ_pid));
 
     FD_ZERO(&read_fd);
 
@@ -105,11 +135,8 @@ int main(int argc, char const *argv[])
                 switch(x){
                     case 0:
                         printf("Stopping the MotorZ\n");
-                        int a = write(fd_insp_z, &position, sizeof(float));
-                        if (a == -1){
-                            printf("Error Occured writing on insp");
-                            return 5;
-                            }
+                        check(write(fd_insp_z, &position, sizeof(float)));
+                        kill(pid_watchdog, SIGUSR1);
                         sleep(movement_time);
                         break;
                     case -1:

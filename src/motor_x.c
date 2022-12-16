@@ -35,6 +35,11 @@ int check(int retval)
     return retval;
 }
 
+void sigusr1_handler(int sig)
+{
+    printf("Killig the MotorX \n");
+}
+
 int main(int argc, char const *argv[])
 {
     //open Log file
@@ -64,19 +69,31 @@ int main(int argc, char const *argv[])
 
     float movement;
 
+    signal(SIGUSR1, sigusr1_handler);
+
     fd_set readfds;
     struct timeval timeout;
 
     char *fifo_watchdog_pid = "/tmp/watchdog_pid_x";
+    char *fifo_motX_pid = "/tmp/pid_x";
+
     mkfifo(fifo_watchdog_pid, 0666);
+    mkfifo(fifo_motX_pid, 0666);
     
     fprintf(logfile, "p - FIFO FILES HAVE MADE AND CONNECTED\n");
     fflush(logfile);
+    
     //getting watchdog pid
     int fd_watchdog_pid = check(open(fifo_watchdog_pid, O_RDONLY));
     check(read(fd_watchdog_pid, buffer, SIZE));
     pid_watchdog = atoi(buffer);
     check(close(fd_watchdog_pid));
+
+    //writing own pid
+    int fd_motX_pid = check(open(fifo_motX_pid, O_WRONLY));
+    sprintf(buffer, "%d", (int)getpid());
+    check(write(fd_motX_pid, buffer, SIZE));
+    check(close(fd_motX_pid));
 
     // Path to the named pipe
     char *motorX_fifo = "/tmp/motorX_fifo";
@@ -109,14 +126,14 @@ int main(int argc, char const *argv[])
                     case 0:
                         printf("StoppedMotorX\n");
                         check(write(fd_insp, &position, sizeof(float)));
-                        //kill(pid_watchdog, SIGUSR1);
+                        kill(pid_watchdog, SIGUSR1);
                         sleep(movement_time);
                         break;
                     case -1:
                         printf("Decreasing the speed of MotorX\n");
                         position -= movement;
                         check(write(fd_insp, &position, sizeof(float)));
-                        //kill(pid_watchdog, SIGUSR1);
+                        kill(pid_watchdog, SIGUSR1);
                         sleep(movement_time);
                         break;
                     case 1:
@@ -130,21 +147,21 @@ int main(int argc, char const *argv[])
                         }
                         else{
                         position += movement;
-                        check(write(fd_insp, &position, sizeof(float)));}
-                        //kill(pid_watchdog, SIGUSR1);
+                        check(write(fd_insp, &position, sizeof(float)));
+                        kill(pid_watchdog, SIGUSR1);}
                         sleep(movement_time);
                         break;
                     case 2:
                         printf("Stopped From Inspection Occured\n");
                         check(write(fd_insp, &position, sizeof(float)));
-                        //kill(pid_watchdog, SIGUSR1);
+                        kill(pid_watchdog, SIGUSR1);
                         sleep(movement_time);
                         break;
                     case 3:
                         printf("Reset Command Occured\n");
                         position = 0;
                         check(write(fd_insp, &position, sizeof(float)));
-                        //kill(pid_watchdog, SIGUSR1);
+                        kill(pid_watchdog, SIGUSR1);
                         sleep(movement_time);
                         }
                         break;    
