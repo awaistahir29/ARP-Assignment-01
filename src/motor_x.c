@@ -23,6 +23,7 @@ char buffer[SIZE];
 
 int fd_insp;
 float position = 0;  //position of the X motor
+int cmd_count = 0;
 
 int check(int retval)
 {
@@ -112,14 +113,16 @@ int main(int argc, char const *argv[])
     }
 
     int fd_X = check(open(motorX_fifo, O_RDWR));
-    fd_insp = check(open(inspection_fifo, O_RDWR));
+    fd_insp = check(open(inspection_fifo, O_WRONLY));
+
+    check(write(fd_insp, &position, sizeof(float)));
     
     while(TRUE) {
         
         FD_ZERO(&readfds);
     
         FD_SET(fd_X, &readfds);
-        FD_SET(fd_insp, &readfds);
+        //FD_SET(fd_insp, &readfds);
 
         //generating a small random error between -0.02 and 0.02
         random_error = (float)(-20 + rand() % 40) / 1000;
@@ -127,7 +130,7 @@ int main(int argc, char const *argv[])
         switch(select(FD_SETSIZE + 1, &readfds, NULL, NULL, &timeout)){
             case 0:
                 switch(x){
-                    case 0:
+                    case 4:
                         printf("StoppedMotorX\n");
                         check(write(fd_insp, &position, sizeof(float)));
                         kill(pid_watchdog, SIGUSR1);
@@ -172,16 +175,19 @@ int main(int argc, char const *argv[])
                 printf("No Command Received\n");
                 break;
             default:
-                if (FD_ISSET(fd_X, &readfds))
-            {
-
+                if (FD_ISSET(fd_X, &readfds)){
                 read(fd_X, &x, sizeof(x));
-            }
-            if (FD_ISSET(fd_insp, &readfds))
-            {
-                read(fd_insp, &x, sizeof(x));
-                //strcpy(last_input_command, "");
+                printf("Command Received from COmmand Konsole\n");
+                if(movement > 1){
+                movement = movement * 2;
                 }
+                }
+                /*
+                if (FD_ISSET(fd_insp, &readfds)){
+                    read(fd_insp, &x, sizeof(x));
+                    printf("Command Received from INSPECTION Konsole\n");
+                    //strcpy(last_input_command, "");
+                    }*/
             break; 
         }
     }

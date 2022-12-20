@@ -22,7 +22,7 @@ int x;
 int pid_watchdog;
 char buffer[SIZE];
 
-float position = 0.0;
+float position = 0;
 int fd_insp_z;
 
 int check(int retval)
@@ -81,7 +81,6 @@ int main(int argc, char const *argv[])
     signal(SIGUSR1, sigusr1_handler);
 
     // Path to the named pipe
-    char *motorX_fifo = "/tmp/motorX_fifo";
     char *motorZ_fifo = "/tmp/motorZ_fifo";
     char *inspection_fifoZ = "/tmp/insp_fifoZ";
     char *fifo_motZ_pid = "/tmp/pid_z";
@@ -123,13 +122,15 @@ int main(int argc, char const *argv[])
     FD_ZERO(&read_fd);
 
     FD_SET(fd_z, &read_fd);
+
+    check(write(fd_insp_z, &position, sizeof(float)));
     
     while(TRUE) {
 
         FD_ZERO(&read_fd);
 
         FD_SET(fd_z, &read_fd);
-        FD_SET(fd_insp_z, &read_fd);
+        //FD_SET(fd_insp_z, &read_fd);
 
         //generating a small random error between -0.02 and 0.02
         random_error = (float)(-20 + rand() % 40) / 1000;
@@ -137,7 +138,7 @@ int main(int argc, char const *argv[])
         switch(select(FD_SETSIZE + 1, &read_fd, NULL, NULL, &timeout)){
             case 0:
                 switch(x){
-                    case 0:
+                    case 4:
                         printf("Stopping the MotorZ\n");
                         check(write(fd_insp_z, &position, sizeof(float)));
                         kill(pid_watchdog, SIGUSR1);
@@ -185,11 +186,12 @@ int main(int argc, char const *argv[])
 
                 read(fd_z, &x, sizeof(x));
             }
+            /*
             if (FD_ISSET(fd_insp_z, &read_fd))
             {
 
                 read(fd_insp_z, &x, sizeof(x));
-            }
+            }*/
             break;
             
     }

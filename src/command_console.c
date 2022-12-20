@@ -136,7 +136,7 @@ int main(int argc, char const *argv[])
                     for(int j = 0; j < COLS; j++) {
                         mvaddch(LINES - 1, j, ' ');
                     }
-                    int s = 0;
+                    int s = 4;
                     //char buf[80];
                     check(write(fd_X, &s, sizeof(int)));
                 }
@@ -178,7 +178,7 @@ int main(int argc, char const *argv[])
                     for(int j = 0; j < COLS; j++) {
                         mvaddch(LINES - 1, j, ' ');
                     }
-                    int sz = 0;
+                    int sz = 4;
                     //char buf[80];
                     check(write(fd_z, &sz, sizeof(sz)));
                 }

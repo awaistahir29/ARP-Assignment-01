@@ -58,7 +58,7 @@ int main(int argc, char const *argv[])
     int fd_insp = check(open(inspection_fifo_insp, O_RDWR));
     int fd_insp_z = check(open(inspection_fifoZ_insp, O_RDWR));
     
-    printf("Opened FIle Z\n");
+    //printf("Opened FIle Z\n");
 
     // Utility variable to avoid trigger resize event on launch
     int first_resize = TRUE;
@@ -68,6 +68,11 @@ int main(int argc, char const *argv[])
 
     // Initialize User Interface 
     init_console_ui();
+
+    check(read(fd_insp, &ee_x, sizeof(float)));
+    //check(read(fd_insp_z, &ee_y, sizeof(float)));
+
+    update_console_ui(&ee_x, &ee_y);
 
     // Infinite loop
     while(TRUE)
