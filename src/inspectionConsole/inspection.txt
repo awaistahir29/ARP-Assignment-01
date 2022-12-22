@@ -1,10 +1,3 @@
-Inspection Console Process
+Inspection Process
 
-Two Buttons
-1) Stop
-2) Reset
-
-Description:
-It has two buttons of Stop and Reset and if user perss stop or reset it immmidiately stop and reset the motors.
-
-Additionaly, It has window to simulate the hoist on x and y axis and grab the target
+This process simulates the hoist and has 2 buttons to reset and stop motors

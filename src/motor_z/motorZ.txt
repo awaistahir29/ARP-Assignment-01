@@ -1,5 +1,0 @@
-Motor Z Process
-
-It increase, decrease, or stop the motor upon receiving the commands from command console.
-Also, or receive stop and reset commands from inspection console.
-It computes the velocity of the motorZ.

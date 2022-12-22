@@ -1,4 +1,3 @@
-Master Process
+Master Process 
 
-Description
-This process Spawn all processes as child processes and wait for them to complete execution. 
+It Spawn all processes and wait for all of them to be executed 
