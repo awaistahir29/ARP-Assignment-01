@@ -1,4 +1,4 @@
-#include "./../include/inspection_utilities.h"
+#include "./../../include/inspection_utilities.h"
 
 #include <curses.h>
 #include <stdio.h>

@@ -1,0 +1,3 @@
+Watchdog Process
+
+This process keep its eyes on all processes and if no activity detected by Motors, it will kill terminate all processes.

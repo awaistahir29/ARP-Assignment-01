@@ -1,0 +1,4 @@
+Master Process
+
+Description
+This process Spawn all processes as child processes and wait for them to complete execution. 

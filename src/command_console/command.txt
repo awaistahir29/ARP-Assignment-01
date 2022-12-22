@@ -1,0 +1,13 @@
+Command Console Process
+
+Commands:
+
+1) Vx++
+2) Vx Stop	
+3) Vx--
+4) Vy++
+5) Vy Stop
+6) Vy--
+
+Description
+This proceess is used to send the commands to the motors in order to increase, decrease and Stop the motors. 
