@@ -1,6 +1,8 @@
 # install <pathname>
 
+unzip include.zip
 unzip src.zip 
+mkdir bin
 
 gcc src/motor_x/motor_x.c -o bin/motorX
 gcc src/motor_z/motor_z.c -o bin/motorZ

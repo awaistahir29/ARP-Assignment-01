@@ -1,3 +1,0 @@
-Inspection Process
-
-This process simulates the hoist and has 2 buttons to reset and stop motors

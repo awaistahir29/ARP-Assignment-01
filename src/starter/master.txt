@@ -1,3 +1,0 @@
-Master Process 
-
-It Spawn all processes and wait for all of them to be executed 
