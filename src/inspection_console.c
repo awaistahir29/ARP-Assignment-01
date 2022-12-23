@@ -39,7 +39,7 @@ int main(int argc, char const *argv[])
         printf("an error occured while creating Command Console's log File\n");
         return 0;
     }
-    
+
     fprintf(logfile, "***log file created***\n");
     fflush(logfile);
     */
@@ -53,7 +53,7 @@ int main(int argc, char const *argv[])
     int fd_insp = check(open(inspection_fifo, O_RDWR));
     int fd_insp_z = check(open(inspection_fifoZ, O_RDWR));
     
-    printf("Opened FIle Z\n");
+    //printf("Opened FIle Z\n");
 
     // Utility variable to avoid trigger resize event on launch
     int first_resize = TRUE;
@@ -158,6 +158,6 @@ int main(int argc, char const *argv[])
 
     check(close(fd_z));
     unlink(motorZ_fifo);
-//return value
+ //return value
     return 0;
 }
